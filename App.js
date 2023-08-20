@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useCallback } from 'react';
 import { useEffect } from 'react';
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -10,14 +10,16 @@ function App() {
   const[error,setError] = useState(null);
   const[times,setTimes] = useState(true); 
   
+  
 
-  async function fetchMoviesHandler()
+  // async function fetchMoviesHandler()
+  const fetchMoviesHandler = useCallback(async () =>
   {
     
     setIsLoading(true);
     setError(null);
     try{
-      const response = await fetch("https://swapi.dev/api/fims/");
+      const response = await fetch("https://swapi.dev/api/films/");
 
       if(!response.ok)
       {
@@ -42,7 +44,12 @@ function App() {
                  
                 }
       setIsLoading(false);
-  }
+  },[])
+
+  useEffect(()=>{
+    fetchMoviesHandler();
+  },[fetchMoviesHandler]);
+ 
  
  if(error && times)
  {
